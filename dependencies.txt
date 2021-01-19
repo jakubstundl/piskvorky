@@ -1,0 +1,9 @@
+#sudo pip install numpy #in terminal
+pip install --upgrade pip --user
+pip install flask --user
+pip install python-dotenv --user #unnecesary
+pip install flask-sqlalchemy --user
+pip install flask-migrate --user
+
+
+

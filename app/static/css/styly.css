@@ -1,0 +1,264 @@
+/*@media screen and (max-width: 600px) {*/
+.indexbody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: linear-gradient(#615dad, #ffc8da);
+  margin: auto;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  flex-direction: column;
+  max-width: 80vmin;
+  color: white;
+}
+
+.image {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  height: auto;
+}
+
+.container {
+  background-color: #283e50;
+  width: 400px;
+  border-radius: 10px 10px 0 0;
+}
+
+h1 {
+  font-size: 48px;
+  text-align: center;
+  font-family: 'Lobster', cursive;
+  margin: 40px 40px;
+  font-weight: 400;
+}
+
+.text {
+  padding: 0 10px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  line-height: 1.5;
+  color: white;
+  text-align: center;
+}
+
+.button {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+  padding: 20px 0;
+  display: inline-block;
+  height: auto;
+}
+
+.rules {
+  background-color: #1fcca4;
+}
+
+.rules:hover,
+.rules:focus {
+  background-color: #1cbb96;
+}
+
+.start {
+  background-color: #0197f6;
+  margin-top: 1px;
+}
+
+.start:hover,
+.start:focus {
+  background-color: #0090e9;
+}
+
+/*pravidla*/
+.rulesDescription {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: linear-gradient(#615dad, #ffc8da);
+  margin: auto;
+  color: white;
+  max-width: 80vmin;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.containerRules {
+  background-color: #283e50;
+  max-width: 300px;
+  border-radius: 10px 10px 0 0;
+  justify-content: center;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+}
+
+.rulesImages {
+  width: 100%;
+}
+
+figcaption {
+  font-style: italic;
+  font-size: 12px;
+}
+
+figure {
+  text-align: center;
+  padding-top: 1em;
+}
+
+.ikon {
+  filter: invert(100%);
+  width: 1em;
+  height: 1em;
+}
+
+ol {
+  padding-right: 5px;
+}
+
+li {
+  margin-top: 1em;
+}
+
+/*hra*/
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.square {
+  flex-basis: 10%;
+  padding-top: 10%;
+  opacity: 0.6;
+  border: solid 1px black;
+}
+
+.square:hover,
+.square:focus {
+  filter: brightness(150%);
+}
+.square:disabled {
+  background-color: white;
+}
+
+.nav {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+}
+
+.home {
+  text-decoration: none;
+  margin-right: 7px;
+  padding: 5px;
+  border-radius: 15%;
+}
+
+.restart {
+  padding: 5px;
+  border-radius: 15%;
+}
+
+.game-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.player {
+  display: flex;
+  margin-top: 5px;
+}
+
+.cssCircle {
+  height: 30px;
+  width: 30px;
+  background-image: url('/static/images/circle.svg');
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  filter: invert(100%);
+}
+
+.cssCross {
+  height: 30px;
+  width: 30px;
+  background-image: url('/static/images/cross.svg');
+  background-repeat: no-repeat;
+  margin-left: 5px;
+  filter: invert(100%);
+}
+
+.play {
+  align-items: initial;
+}
+
+.O {
+  background-image: url('/static/images/circle.svg');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: 50%, 50%;
+  -webkit-animation: zoomin 0.15s linear;
+  animation: zoomin 0.15s linear;
+  animation-fill-mode: forwards;
+}
+.gameIDdiv{
+  display: none;
+}
+@-webkit-keyframes zoomin {
+  0% {
+    background-size: 0%;
+  }
+  100% {
+    background-size: 70%;
+  }
+}
+
+.X {
+  background-image: url('/static/images/cross.svg');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: 50%, 50%;
+  -webkit-animation: zoomin 0.15s linear;
+  animation: zoomin 0.15s linear;
+  animation-fill-mode: forwards;
+}
+@-webkit-keyframes zoomin {
+  0% {
+    background-size: 0%;
+  }
+  100% {
+    background-size: 70%;
+  }
+}
+
+/*široká obrazovka*/
+@media screen and (min-width: 600px) {
+  /*pravidla*/
+
+  .containerRules {
+    max-width: 600px;
+    background-repeat: no-repeat;
+  }
+
+  figurecaption {
+    font-size: 13px;
+  }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .examplesDiv {
+    flex-basis: 50%;
+  }
+
+  ol {
+    padding-right: 25px;
+    margin-left: 25px;
+  }
+}
