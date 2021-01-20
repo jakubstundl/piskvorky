@@ -101,7 +101,6 @@ class Game {
       timer = setInterval(() => {
         if (buttons[i].className === "square") {
           buttons[i].disabled = false;
-          console.log(i);
         }
         i++;
         if (i === buttons.length) {
@@ -137,6 +136,41 @@ class Game {
 
     return gameState;
   };
+  setState(state:string,player:string){
+    let buttons: Array<HTMLButtonElement> = [];
+    for (
+      let i: number = 0;
+      i < document.querySelectorAll(".square").length;
+      i++
+    ) {
+      buttons.push(
+        document.querySelectorAll(".square")[i] as HTMLButtonElement
+      );
+    }
+    for (let i: number = 0; i < buttons.length; i++) {
+      switch(state[i]){
+        case "-":
+          buttons[i].className = "square"
+        break;
+        case "O":
+          buttons[i].className = "square O"
+        break;
+        case "X":
+          buttons[i].className = "square X"
+        break;
+      }
+      switch(player){
+        case "circle":
+          symbol.setSymbolO();
+          break;
+        case "cross":
+          symbol.setSymbolX();
+
+    }
+  }
+
+
+  }
   sendGameState(player: string) {
     interface Data {
       id: string;
@@ -149,7 +183,7 @@ class Game {
       player: player,
     };
 
-    fetch("/gameState", {
+    fetch("/setState", {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -159,19 +193,32 @@ class Game {
       .then((response) => response.json())
       .then((data) => {
         console.log("succes, now wait()");
-        this.wait();
+        this.wait(player);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }
-  wait() {
-    fetch(`/gameState/${this.getId()}`)
-      .then((resp) => resp.json())
-      .then((json) => {});
+  wait(player: string) {
+    setTimeout(() => {
+      fetch(`/getState?id=${this.getId()}`)
+        .then((resp) => resp.json())
+        .then((json) => {
+          //console.log(`json.player=${json.player} player=${player}`);
+          if (json.player === player) {
+            console.log(`json.state=${json.state} player=${player}`);
+            this.setState(json.state,json.player);
+            this.play();
+          } else {
+            this.wait(player);
+          }
+        });
+    }, 3000);
   }
 
-  play() {}
+  play() {
+    this.enableAll();
+  }
 }
 let game = new Game();
 
@@ -219,18 +266,22 @@ class Field {
   click(mySymbol: string) {
     if (mySymbol === "circle") {
       this.field.addEventListener("click", () => {
-        console.log("Click");
+        console.log("Click " + mySymbol);
         this.setOByClick();
         this.dissableAll();
         game.sendGameState(mySymbol);
+        console.log(game.sendGameState(mySymbol));
+        game.wait(mySymbol);
       });
     }
     if (mySymbol === "cross") {
       this.field.addEventListener("click", () => {
-        console.log("Click");
+        console.log("Click " + mySymbol);
         this.setXByClick();
         this.dissableAll();
         game.sendGameState(mySymbol);
+        console.log(game.sendGameState(mySymbol));
+        game.wait(mySymbol);
       });
     }
   }

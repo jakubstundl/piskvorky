@@ -69,17 +69,24 @@ def newGame():
 
 
 
-@app.route('/gameState',methods=['POST'])
-def getState():
+@app.route('/setState',methods=['POST'])
+def setState():
         data = (request.data.decode('UTF-8'))
         print(data)
+        id=json.loads(data)['id']
         state = json.loads(data)['state']
         player = json.loads(data)['player']
+        game_edit(id,state,player)
+        print(id,state,player)
+        return {"Succes":"Succes"}
+
+@app.route('/getState',methods=['GET'])
+
+def getState():
+        id = request.args.get('id')  
         
 
-        return "Succes"
-
-
+        return game_state(id)
 
 
 

@@ -1,0 +1,3 @@
+flask db init
+flask db migrate -m "games table"
+flask db upgrade
