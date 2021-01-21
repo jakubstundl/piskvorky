@@ -30,7 +30,7 @@ class Link {
   }
   setLinks(id: number) {
     this.link1 = `/hra-p1?id=${id}`;
-    this.link2 = `${window.location.host}/hra-p2?id=${id}`;
+    this.link2 = `/hra-p2?id=${id}`;
     let span1: HTMLLinkElement = document.getElementById(
       "gameLink"
     ) as HTMLLinkElement;
@@ -110,7 +110,7 @@ class Game {
     };
     myTimer();
   };
-  gameState = () => {
+  gameState() {
     let gameState: string = "";
     let buttons: Array<HTMLButtonElement> = [];
     for (
@@ -135,8 +135,8 @@ class Game {
     }
 
     return gameState;
-  };
-  setState(state:string,player:string){
+  }
+  setState(state: string, player: string) {
     let buttons: Array<HTMLButtonElement> = [];
     for (
       let i: number = 0;
@@ -148,28 +148,25 @@ class Game {
       );
     }
     for (let i: number = 0; i < buttons.length; i++) {
-      switch(state[i]){
+      switch (state[i]) {
         case "-":
-          buttons[i].className = "square"
-        break;
+          buttons[i].className = "square";
+          break;
         case "O":
-          buttons[i].className = "square O"
-        break;
+          buttons[i].className = "square O";
+          break;
         case "X":
-          buttons[i].className = "square X"
-        break;
+          buttons[i].className = "square X";
+          break;
       }
-      switch(player){
+      switch (player) {
         case "circle":
           symbol.setSymbolO();
           break;
         case "cross":
           symbol.setSymbolX();
-
+      }
     }
-  }
-
-
   }
   sendGameState(player: string) {
     interface Data {
@@ -206,8 +203,8 @@ class Game {
         .then((json) => {
           //console.log(`json.player=${json.player} player=${player}`);
           if (json.player === player) {
-            console.log(`json.state=${json.state} player=${player}`);
-            this.setState(json.state,json.player);
+            //console.log(`json.state=${json.state} player=${player}`);
+            this.setState(json.state, json.player);
             this.play();
           } else {
             this.wait(player);
@@ -215,9 +212,123 @@ class Game {
         });
     }, 3000);
   }
+  win(symbol: string) {
+    setTimeout(() => {
+      switch (symbol) {
+        case "X":
+          if (confirm("Vyhrál křížek")) {
+            location.href = "/index";
+          } else {
+            location.href = "/index";
+          }
+          break;
+        case "O":
+          if (confirm("Vyhrálo kolečko")) {
+            location.href = "/index";
+          } else {
+            location.href = "/index";
+          }
+          break;
+      }
+    }, 200);
+  }
+  checkWin(state: string) {
+    //console.log(`checkWin ${state}`);
+
+    const checkRows = (symbol: string) => {
+      let n: number = 0;
+      for (let i: number = 0; i < 10; i++) {
+        for (let j: number = 0; j < 10; j++) {
+         // console.log(10 * i + j)
+          if (state[10 * i + j] === symbol) {
+            
+            n++;
+            if (n > 4) {
+             // console.log(`win proc`);
+              this.win(symbol);
+            }
+            //console.log(`row n=${n}`);
+          } else {
+            n = 0;
+          }
+        }
+      }
+    };
+    const checkColumns = (symbol: string) => {
+      let n: number = 0;
+      for (let i: number = 0; i < 10; i++) {
+        for (let j: number = 0; j < 10; j++) {
+          if (state[10 * j + i] === symbol) {
+            n++;
+            if (n > 4) {
+              //console.log(`win proc`);
+              this.win(symbol);
+            }
+          } else {
+            n = 0;
+          }
+        }
+      }
+    };
+    const checkLeanUp = (symbol: string) => {
+      let n: number = 0;
+      for (let i: number = 0; i < 6; i++) {
+        for (let j: number = 4; j < 10; j++) {
+          for(let k: number = 0;k<5;k++){
+            
+              
+            if (state[10 * i + j+ 9 * k] === symbol) {
+             n++;
+              if (n > 4) {
+                console.log(`win proc`);
+                this.win(symbol);
+              }
+              console.log(`row n=${n}`);
+            } else {
+              n = 0;
+            }
+          }
+          
+        }
+      }
+    };
+    const checkLeanDown = (symbol: string) => {
+      let n: number = 0;
+      for (let i: number = 0; i < 5; i++) {
+        for (let j: number = 0; j < 5; j++) {
+          for(let k: number = 0;k<5;k++){
+            //console.log("leanDown"+(10 * i + j+ 11 * k))
+            if (state[10 * i + j+ 11 * k] === symbol) {
+              
+              n++;
+              if (n > 4) {
+               // console.log(`win proc`);
+                this.win(symbol);
+              }
+              //console.log(`row n=${n}`);
+            } else {
+              n = 0;
+            }
+          }
+          
+        }
+      }
+    };
+    checkColumns("X");
+    checkRows("X");
+    checkColumns("O");
+    checkRows("O");
+    checkLeanDown("O")
+    checkLeanDown("X")
+    checkLeanUp("O")
+    checkLeanUp("X")
+
+  }
 
   play() {
+    
     this.enableAll();
+    this.checkWin(this.gameState());
   }
 }
 let game = new Game();
@@ -266,22 +377,24 @@ class Field {
   click(mySymbol: string) {
     if (mySymbol === "circle") {
       this.field.addEventListener("click", () => {
-        console.log("Click " + mySymbol);
+        //console.log("Click " + mySymbol);
         this.setOByClick();
         this.dissableAll();
         game.sendGameState(mySymbol);
-        console.log(game.sendGameState(mySymbol));
+       // console.log(game.sendGameState(mySymbol));
         game.wait(mySymbol);
+        game.checkWin(game.gameState());
       });
     }
     if (mySymbol === "cross") {
       this.field.addEventListener("click", () => {
-        console.log("Click " + mySymbol);
+       // console.log("Click " + mySymbol);
         this.setXByClick();
         this.dissableAll();
         game.sendGameState(mySymbol);
-        console.log(game.sendGameState(mySymbol));
+       // console.log(game.sendGameState(mySymbol));
         game.wait(mySymbol);
+        game.checkWin(game.gameState());
       });
     }
   }

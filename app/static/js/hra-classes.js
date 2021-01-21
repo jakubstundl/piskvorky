@@ -25,7 +25,7 @@ class Link {
     }
     setLinks(id) {
         this.link1 = `/hra-p1?id=${id}`;
-        this.link2 = `${window.location.host}/hra-p2?id=${id}`;
+        this.link2 = `/hra-p2?id=${id}`;
         let span1 = document.getElementById("gameLink");
         span1.href = this.link2;
         let buttonLink = document.getElementById("okBtn");
@@ -63,25 +63,6 @@ class Game {
             };
             myTimer();
         };
-        this.gameState = () => {
-            let gameState = "";
-            let buttons = [];
-            for (let i = 0; i < document.querySelectorAll(".square").length; i++) {
-                buttons.push(document.querySelectorAll(".square")[i]);
-            }
-            for (let i = 0; i < buttons.length; i++) {
-                if (buttons[i].className === "square") {
-                    gameState += "-";
-                }
-                if (buttons[i].className === "square O") {
-                    gameState += "O";
-                }
-                if (buttons[i].className === "square X") {
-                    gameState += "X";
-                }
-            }
-            return gameState;
-        };
         this.id = 0;
     }
     start() {
@@ -104,6 +85,25 @@ class Game {
             return params;
         };
         return getQueryParams(document.location.search).id.toString();
+    }
+    gameState() {
+        let gameState = "";
+        let buttons = [];
+        for (let i = 0; i < document.querySelectorAll(".square").length; i++) {
+            buttons.push(document.querySelectorAll(".square")[i]);
+        }
+        for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].className === "square") {
+                gameState += "-";
+            }
+            if (buttons[i].className === "square O") {
+                gameState += "O";
+            }
+            if (buttons[i].className === "square X") {
+                gameState += "X";
+            }
+        }
+        return gameState;
     }
     setState(state, player) {
         let buttons = [];
@@ -160,7 +160,7 @@ class Game {
                 .then((json) => {
                 //console.log(`json.player=${json.player} player=${player}`);
                 if (json.player === player) {
-                    console.log(`json.state=${json.state} player=${player}`);
+                    //console.log(`json.state=${json.state} player=${player}`);
                     this.setState(json.state, json.player);
                     this.play();
                 }
@@ -170,8 +170,119 @@ class Game {
             });
         }, 3000);
     }
+    win(symbol) {
+        setTimeout(() => {
+            switch (symbol) {
+                case "X":
+                    if (confirm("Vyhrál křížek")) {
+                        location.href = "/index";
+                    }
+                    else {
+                        location.href = "/index";
+                    }
+                    break;
+                case "O":
+                    if (confirm("Vyhrálo kolečko")) {
+                        location.href = "/index";
+                    }
+                    else {
+                        location.href = "/index";
+                    }
+                    break;
+            }
+        }, 200);
+    }
+    checkWin(state) {
+        //console.log(`checkWin ${state}`);
+        const checkRows = (symbol) => {
+            let n = 0;
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    // console.log(10 * i + j)
+                    if (state[10 * i + j] === symbol) {
+                        n++;
+                        if (n > 4) {
+                            // console.log(`win proc`);
+                            this.win(symbol);
+                        }
+                        //console.log(`row n=${n}`);
+                    }
+                    else {
+                        n = 0;
+                    }
+                }
+            }
+        };
+        const checkColumns = (symbol) => {
+            let n = 0;
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (state[10 * j + i] === symbol) {
+                        n++;
+                        if (n > 4) {
+                            //console.log(`win proc`);
+                            this.win(symbol);
+                        }
+                    }
+                    else {
+                        n = 0;
+                    }
+                }
+            }
+        };
+        const checkLeanUp = (symbol) => {
+            let n = 0;
+            for (let i = 0; i < 6; i++) {
+                for (let j = 4; j < 10; j++) {
+                    for (let k = 0; k < 5; k++) {
+                        if (state[10 * i + j + 9 * k] === symbol) {
+                            n++;
+                            if (n > 4) {
+                                console.log(`win proc`);
+                                this.win(symbol);
+                            }
+                            console.log(`row n=${n}`);
+                        }
+                        else {
+                            n = 0;
+                        }
+                    }
+                }
+            }
+        };
+        const checkLeanDown = (symbol) => {
+            let n = 0;
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    for (let k = 0; k < 5; k++) {
+                        //console.log("leanDown"+(10 * i + j+ 11 * k))
+                        if (state[10 * i + j + 11 * k] === symbol) {
+                            n++;
+                            if (n > 4) {
+                                // console.log(`win proc`);
+                                this.win(symbol);
+                            }
+                            //console.log(`row n=${n}`);
+                        }
+                        else {
+                            n = 0;
+                        }
+                    }
+                }
+            }
+        };
+        checkColumns("X");
+        checkRows("X");
+        checkColumns("O");
+        checkRows("O");
+        checkLeanDown("O");
+        checkLeanDown("X");
+        checkLeanUp("O");
+        checkLeanUp("X");
+    }
     play() {
         this.enableAll();
+        this.checkWin(this.gameState());
     }
 }
 let game = new Game();
@@ -208,22 +319,24 @@ class Field {
     click(mySymbol) {
         if (mySymbol === "circle") {
             this.field.addEventListener("click", () => {
-                console.log("Click " + mySymbol);
+                //console.log("Click " + mySymbol);
                 this.setOByClick();
                 this.dissableAll();
                 game.sendGameState(mySymbol);
-                console.log(game.sendGameState(mySymbol));
+                // console.log(game.sendGameState(mySymbol));
                 game.wait(mySymbol);
+                game.checkWin(game.gameState());
             });
         }
         if (mySymbol === "cross") {
             this.field.addEventListener("click", () => {
-                console.log("Click " + mySymbol);
+                // console.log("Click " + mySymbol);
                 this.setXByClick();
                 this.dissableAll();
                 game.sendGameState(mySymbol);
-                console.log(game.sendGameState(mySymbol));
+                // console.log(game.sendGameState(mySymbol));
                 game.wait(mySymbol);
+                game.checkWin(game.gameState());
             });
         }
     }
