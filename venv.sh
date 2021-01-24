@@ -5,3 +5,4 @@ export FLASK_APP=hra.py
 export FLASK_ENV=development
 
 pip freeze > requirements.txt
+pip install -r requirements.txt
