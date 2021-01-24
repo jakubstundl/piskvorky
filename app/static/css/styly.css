@@ -126,15 +126,20 @@ li {
 
 .grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column
+  
+}
+.gridRow{
+  display: flex;
 }
 
 .square {
-  flex-basis: 10%;
-  padding-top: 10%;
+  flex-basis:  10%;
+  padding-top: 9%;
   opacity: 0.6;
   border: solid 1px black;
-}
+  
+  }
 
 .square:hover,
 .square:focus {
