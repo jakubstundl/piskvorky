@@ -6,7 +6,11 @@ import json
 from app.models import Game
 from app.multiplayer import Game_Id
 from app.save_to_db import *
-
+from app.qr import *
+import qrcode
+from PIL import Image
+import base64
+import io
 
 
 
@@ -23,28 +27,6 @@ def pravidla():
     
     return render_template('pravidla.html')
 
-
-'''
-@app.route('/hra',methods=['GET', 'POST'])
-def hra():
-    data = (request.data.decode('UTF-8'))
-    
-    if(data==''):
-        newGame = Game_Id.get_game_id()
-        player1_id=Game_Id.get_player1_id()
-        player2_id=Game_Id.get_player2_id()
-        save_to_db(newGame,player1_id,player2_id)
-        return render_template('hra-p1.html',gameID=newGame,player1ID=player1_id,player2ID=player2_id)
-    else:
-        print("false")
-        print(data)
-        v1 = json.loads(data)['game_id']
-        v2 = json.loads(data)['player']
-        v3 = json.loads(data)['state_of_game']
-        v4 = json.loads(data)['last_push']
-        game_edit(v1,v2,v3,v4)
-        return render_template('hra-p1.html')
-'''
 @app.route('/hra')
 def hra():
     return render_template('hra.html')
@@ -88,5 +70,15 @@ def getState():
 
         return game_state(id)
 
+@app.route('/getQR')
+def getQr():
+    id = request.args.get('id')
+    print("qr"+str(id))
+    im = qr("https://piskvorky-app.herokuapp.com/hra-p2?id="+id)
+    data = io.BytesIO()
+    im.save(data, "PNG")
+    encoded_img_data = base64.b64encode(data.getvalue())
+
+    return {"img_data":encoded_img_data.decode('utf-8')}
 
 

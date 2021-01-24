@@ -40,7 +40,8 @@ class Link {
     ) as HTMLButtonElement;
     buttonLink.addEventListener("click", () => {
       location.href = this.link1;
-    });
+    })
+
   }
   getLink1() {
     return this.link1;
@@ -189,11 +190,11 @@ class Game {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("succes, now wait()");
+        //console.log("succes, now wait()");
         this.wait(player);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        //console.error("Error:", error);
       });
   }
   wait(player: string) {
@@ -280,10 +281,10 @@ class Game {
             if (state[10 * i + j+ 9 * k] === symbol) {
              n++;
               if (n > 4) {
-                console.log(`win proc`);
+                //console.log(`win proc`);
                 this.win(symbol);
               }
-              console.log(`row n=${n}`);
+              //console.log(`row n=${n}`);
             } else {
               n = 0;
             }
