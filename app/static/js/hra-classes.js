@@ -32,6 +32,16 @@ class Link {
         buttonLink.addEventListener("click", () => {
             location.href = this.link1;
         });
+        fetch(`/getQR?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+            console.log("gameid" + game.id);
+            console.log(data);
+            let img = new Image();
+            img.src = `data:image/png;base64,${data.img_data}`;
+            let imageElement = document.querySelector(".grid");
+            imageElement.innerHTML = `<img id="picture" src="data:image/png;base64,${data.img_data}" style="width:100%;height:auto">`;
+        });
     }
     getLink1() {
         return this.link1;
