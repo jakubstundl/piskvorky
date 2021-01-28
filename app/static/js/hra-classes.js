@@ -26,8 +26,9 @@ class Link {
     setLinks(id) {
         this.link1 = `/hra-p1?id=${id}`;
         this.link2 = `/hra-p2?id=${id}`;
-        let span1 = document.getElementById("gameLink");
-        span1.href = this.link2;
+        let input = document.getElementById("gameLink");
+        input.value = this.link2;
+        input.select();
         let buttonLink = document.getElementById("okBtn");
         buttonLink.addEventListener("click", () => {
             location.href = this.link1;

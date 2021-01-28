@@ -31,10 +31,11 @@ class Link {
   setLinks(id: number) {
     this.link1 = `/hra-p1?id=${id}`;
     this.link2 = `/hra-p2?id=${id}`;
-    let span1: HTMLLinkElement = document.getElementById(
+    let input: HTMLInputElement = document.getElementById(
       "gameLink"
-    ) as HTMLLinkElement;
-    span1.href = this.link2;
+    ) as HTMLInputElement;
+    input.value = this.link2;
+    input.select()
     let buttonLink: HTMLButtonElement = document.getElementById(
       "okBtn"
     ) as HTMLButtonElement;

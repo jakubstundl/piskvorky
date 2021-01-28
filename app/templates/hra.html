@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hra</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='home.svg') }}">
     <link rel="stylesheet" href="/static/css/styly.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
@@ -16,14 +16,23 @@
     <div id="img"></div>
 
     <div id="gameIDdiv">
-      <p>Game link: <a href="" id="gameLink">Odkaz</a></p>
-      <button id="okBtn">OK</button>
+      <p>Odkaz pro druhého hráče:</p>
+      <input type="text" value="0" id="gameLink">
+      <div class="tooltip">
+        <button onclick="copyButton();" onmouseout="outFunc()">
+          <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+          <img src="static/images/copy.png" width="24px" >
+          </button>
+        </div>
+        <br>
+      <button id="okBtn">Zahájit hru</button>
     </div>
     
     <div class="nav">
+      <div>🠟 Odkaz přímo přes QR kód 🠟</div>
       <div class="player">
-        HRAJE:
-        <div class="cssCircle"></div>
+        
+        
       </div>
 
       <div class="game-icons">
