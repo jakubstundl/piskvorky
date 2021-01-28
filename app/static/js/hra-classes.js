@@ -27,7 +27,7 @@ class Link {
         this.link1 = `/hra-p1?id=${id}`;
         this.link2 = `/hra-p2?id=${id}`;
         let input = document.getElementById("gameLink");
-        input.value = this.link2;
+        input.value = `https://piskvorky-app.herokuapp.com/${this.link2}`;
         input.select();
         let buttonLink = document.getElementById("okBtn");
         buttonLink.addEventListener("click", () => {

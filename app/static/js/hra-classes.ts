@@ -34,7 +34,7 @@ class Link {
     let input: HTMLInputElement = document.getElementById(
       "gameLink"
     ) as HTMLInputElement;
-    input.value = this.link2;
+    input.value = `https://piskvorky-app.herokuapp.com/${this.link2}`;
     input.select()
     let buttonLink: HTMLButtonElement = document.getElementById(
       "okBtn"
